@@ -1,9 +1,12 @@
 import { Elysia, t } from "elysia";
 import { html } from "@elysiajs/html";
-import * as elements from "typed-html";
 import { db } from "./db";
-import { Todo, todos } from "./db/schema";
+import { todos } from "./db/schema";
 import { eq } from "drizzle-orm";
+import { TodoItem } from "./components/TodoItem";
+import { TodoList } from "./components/TodoList";
+import { BaseHtml } from "./components/BaseHtml";
+import * as elements from "typed-html";
 
 const app = new Elysia()
   .use(html())
@@ -74,67 +77,3 @@ const app = new Elysia()
 console.log(
   `🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`
 );
-
-const BaseHtml = ({ children }: elements.Children) => `
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THE BETH STACK</title>
-  <script src="https://unpkg.com/htmx.org@1.9.3"></script>
-  <script src="https://unpkg.com/hyperscript.org@0.9.9"></script>
-  <link href="/styles.css" rel="stylesheet">
-</head>
-
-${children}
-`;
-
-function TodoItem({ content, completed, id }: Todo) {
-  return (
-    <div class="flex flex-row space-x-3">
-      <p>{content}</p>
-      <input
-        type="checkbox"
-        checked={completed}
-        hx-post={`/todos/toggle/${id}`}
-        hx-swap="outerHTML"
-        hx-target="closest div"
-      />
-      <button
-        class="text-red-500"
-        hx-delete={`/todos/${id}`}
-        hx-swap="outerHTML"
-        hx-target="closest div"
-      >
-        X
-      </button>
-    </div>
-  );
-}
-
-function TodoList({ todos }: { todos: Todo[] }) {
-  return (
-    <div>
-      {todos.map((todo) => (
-        <TodoItem {...todo} />
-      ))}
-      <TodoForm />
-    </div>
-  );
-}
-
-function TodoForm() {
-  return (
-    <form
-      class="flex flex-row space-x-3"
-      hx-post="/todos"
-      hx-swap="beforebegin"
-      _="on submit target.reset()"
-    >
-      <input type="text" name="content" class="border border-black" />
-      <button type="submit">Add</button>
-    </form>
-  );
-}
