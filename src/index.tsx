@@ -51,6 +51,8 @@ const app = new Elysia()
   .delete(
     "/todos/:id",
     async ({ params }) => {
+      //sleep 0.3s
+      await new Promise((resolve) => setTimeout(resolve, 300));
       await db.delete(todos).where(eq(todos.id, params.id)).run();
     },
     {
@@ -72,6 +74,7 @@ const app = new Elysia()
     }
   )
   .get("/styles.css", () => Bun.file("./tailwind-gen/styles.css"))
+  .get("/spinner.gif", () => Bun.file("./images/spinner.gif"))
   .listen(3000);
 
 console.log(

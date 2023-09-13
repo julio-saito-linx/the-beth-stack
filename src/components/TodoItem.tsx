@@ -18,7 +18,12 @@ export function TodoItem({ content, completed, id }: Todo) {
         hx-swap="outerHTML"
         hx-target="closest div"
       >
-        X
+        <div class="flex flex-row">
+          <div class="mx-1">X</div>
+          <div class="w-5 h-5">
+            <img class="htmx-indicator" src="/spinner.gif" />
+          </div>
+        </div>
       </button>
     </div>
   );
