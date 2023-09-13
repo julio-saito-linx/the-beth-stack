@@ -1,5 +1,5 @@
 import * as elements from "typed-html";
-import { Todo } from "./db/schema";
+import { Todo } from "../db/schema";
 
 export function TodoItem({ content, completed, id }: Todo) {
   return (

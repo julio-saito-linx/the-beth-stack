@@ -8,7 +8,11 @@ export function TodoForm() {
       hx-swap="beforebegin"
       _="on submit target.reset()"
     >
-      <input type="text" name="content" class="border border-black" />
+      <input
+        type="text"
+        name="content"
+        class="border border-black bg-gray-400 mt-4"
+      />
       <button type="submit">Add</button>
     </form>
   );
